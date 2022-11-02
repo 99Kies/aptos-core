@@ -9,7 +9,7 @@ use crate::{
     },
     processors::{
         coin_processor::CoinTransactionProcessor, default_processor::DefaultTransactionProcessor,
-        token_processor::TokenTransactionProcessor, Processor,
+        token_processor::TokenTransactionProcessor, all_processor::AllTransactionProcessor, Processor,
     },
 };
 
@@ -139,6 +139,7 @@ pub async fn run_forever(config: IndexerConfig, context: Arc<Context>) {
             config.ans_contract_address,
         )),
         Processor::CoinProcessor => Arc::new(CoinTransactionProcessor::new(conn_pool.clone())),
+        Processor::AllProcessor => Arc::new(AllTransactionProcessor::new(conn_pool.clone(), config.ans_contract_address,)),
     };
 
     let options =
